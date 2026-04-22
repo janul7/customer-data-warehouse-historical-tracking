@@ -1,5 +1,5 @@
 
-## 2) `customer-data-warehouse-historical-tracking`
+#customer-data-warehouse-historical-tracking
 
 ```markdown
 # Customer Data Warehouse with Historical Tracking
