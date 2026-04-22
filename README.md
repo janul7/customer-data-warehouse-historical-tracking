@@ -1,40 +1,43 @@
-
-#customer-data-warehouse-historical-tracking
-
-```markdown
 # Customer Data Warehouse with Historical Tracking
 
 A customer analytics warehouse project that supports incremental loading, historical tracking, and downstream reporting for churn, active subscriptions, and revenue analysis.
 
 ## Project Overview
 
-This project focuses on warehouse modeling for customer and subscription data with an emphasis on preserving historical changes over time.
+This project simulates a modern warehouse modeling workflow for customer and subscription data. It ingests operational datasets, loads them into a warehouse-style environment, applies incremental and history-preserving transformations, and publishes reporting-ready marts for downstream analysis.
 
-The project demonstrates how to build a warehouse that does more than store the latest customer state. It captures changes in customer or subscription attributes and makes those changes available for analytics through historical tables and reporting marts.
+The goal of this project is to demonstrate practical junior data engineering skills in:
+- incremental data loading
+- historical warehouse modeling
+- SCD Type 2 implementation
+- workflow orchestration
+- data testing
+- analytics-ready warehouse design
 
 ## Business Problem
 
-Customer and subscription data changes frequently. If analytics systems only store the latest state, teams lose important historical context needed for:
-- churn analysis
-- subscription lifecycle tracking
-- customer plan changes
-- retention analysis
-- revenue trend reporting
+Customer and subscription data changes frequently, but analytics teams often only have access to the latest record state. Without historical tracking, it becomes difficult to analyze customer behavior over time or understand important business events such as plan changes, churn, and retention.
 
-This project addresses that by building a warehouse with incremental loading and historical tracking logic.
+This project solves that problem by building a structured warehouse workflow that:
+- ingests customer and subscription datasets
+- preserves record history over time
+- standardizes and validates source data
+- transforms data into clean staging and business-ready marts
+- supports downstream churn, retention, and revenue analysis
 
 ## What This Project Demonstrates
 
-- Incremental data loading
-- Historical warehouse modeling
-- SCD Type 2 design patterns
+- Incremental warehouse loading
+- Historical data modeling using SCD Type 2 patterns
+- Airflow-based orchestration
+- dbt modeling with staging, snapshots, and mart layers
 - Source-to-target reconciliation
-- Customer and subscription analytics marts
-- Data quality validation for warehouse reliability
+- Data quality validation
+- Reproducible local development with Docker
 
 ## Architecture
 
-Operational Source Tables -> Incremental Extraction -> Warehouse Load -> Historical Modeling -> Analytics Marts -> Reporting
+Operational Source Tables -> Python Ingestion -> PostgreSQL -> Airflow Orchestration -> dbt Snapshots and Models -> Historical Warehouse Tables -> Analytics Marts -> Reporting
 
 ## Tech Stack
 
@@ -43,29 +46,28 @@ Operational Source Tables -> Incremental Extraction -> Warehouse Load -> Histori
 - PostgreSQL
 - Apache Airflow
 - dbt
-- Great Expectations or Soda
 - Docker
+- Great Expectations or Soda
 - Git / GitHub
 
-## Core Use Cases
+## Datasets
 
-- Track customer attribute changes over time
-- Track subscription status and plan history
-- Preserve business history for downstream reporting
-- Support churn and retention analytics
-- Build revenue and active-subscription marts
+- Customer dataset: `<dataset-link>`
+- Subscription dataset: `<dataset-link>`
+- Payment dataset: `<dataset-link>`
 
 ## Key Features
 
-- Incremental load logic for customer and subscription data
-- Historical tracking using SCD Type 2 patterns
-- dbt-based transformation workflow
-- Source-to-target validation checks
-- Reporting-ready marts for churn, revenue, and subscription status
+- Incremental loading of customer and subscription data
+- Historical tracking using SCD Type 2 logic
+- dbt snapshots for change preservation
+- Source-to-target validation and reconciliation checks
+- Analytics-ready marts for churn, revenue, and subscription analysis
+- Reproducible local setup for warehouse development
 
-## Example Data Model
+## Data Model
 
-Core tables may include:
+Example marts included in this project:
 - `stg_customers`
 - `stg_subscriptions`
 - `stg_payments`
@@ -81,20 +83,22 @@ Core tables may include:
 ```text
 customer-data-warehouse-historical-tracking/
 ├── airflow/
-│   └── dags/
+│   ├── dags/
+│   └── logs/
 ├── dbt/
 │   ├── models/
 │   │   ├── staging/
-│   │   ├── snapshots/
+│   │   ├── intermediate/
 │   │   └── marts/
+│   ├── snapshots/
 │   └── tests/
-├── ingestion/
-│   ├── extract/
-│   ├── transform/
-│   └── load/
 ├── data/
 │   ├── source/
 │   └── warehouse/
+├── ingestion/
+│   ├── extract/
+│   ├── load/
+│   └── utils/
 ├── docs/
 ├── docker-compose.yml
 └── README.md
